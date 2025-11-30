@@ -1,0 +1,5 @@
+{
+  "name": "DevStatus",
+  "description": "Real-time development status tracker with automated verification signals from IDEs and CI/CD.",
+  "requestFramePermissions": []
+}
