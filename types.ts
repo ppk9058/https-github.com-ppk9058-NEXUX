@@ -32,6 +32,7 @@ export interface Category {
   title: string;
   description: string;
   order: number;
+  stages: string[]; // ['dev', 'staging', 'prod']
 }
 
 export interface Subcategory {
@@ -40,6 +41,7 @@ export interface Subcategory {
   slug: string;
   title: string;
   required: boolean;
+  stages: string[]; // ['dev', 'staging', 'prod']
 }
 
 export type EvidenceType = 'pr' | 'pipeline' | 'file' | 'console_log' | 'screenshot' | 'artifact' | 'ai_chat';

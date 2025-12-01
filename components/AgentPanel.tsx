@@ -1,6 +1,6 @@
 import React from 'react';
 import { Agent, AgentType, AgentEvent } from '../types';
-import { Terminal, Github, Bot, RefreshCw, Play, FileCode, Server, Sparkles } from 'lucide-react';
+import { Terminal, Github, Bot, RefreshCw, Play, FileCode, Server, Sparkles, ScanLine } from 'lucide-react';
 
 interface AgentPanelProps {
   agents: Agent[];
@@ -59,8 +59,8 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ agents, onSimulateEvent 
             <button 
                 onClick={() => onSimulateEvent({
                     type: 'file_saved',
-                    agentId: 'a1', // VSCode
-                    payload: { path: 'src/infra/Dockerfile', content_hash: 'abc1234' }
+                    agentId: 'a1', 
+                    payload: { path: 'src/infra/Dockerfile', content: 'FROM node:18\nRUN...' }
                 })}
                 className="w-full flex items-center gap-3 p-3 text-left text-sm font-medium text-slate-700 bg-slate-50 hover:bg-white hover:shadow-md border border-slate-200 rounded-lg transition-all group"
             >
@@ -72,11 +72,39 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ agents, onSimulateEvent 
                     <div className="text-xs text-slate-500 font-normal">VS Code Agent • file_saved</div>
                 </div>
             </button>
+            
+            {/* Generalized Detection Button */}
+            <button 
+                onClick={() => onSimulateEvent({
+                    type: 'file_saved',
+                    agentId: 'a1', 
+                    payload: { 
+                        path: 'package.json', 
+                        content: JSON.stringify({
+                            dependencies: {
+                                "prisma": "^5.0.0",
+                                "auth0-js": "^9.0.0",
+                                "jest": "^29.0.0",
+                                "react": "^18.0.0"
+                            }
+                        }, null, 2)
+                    }
+                })}
+                className="w-full flex items-center gap-3 p-3 text-left text-sm font-medium text-slate-700 bg-slate-50 hover:bg-white hover:shadow-md border border-slate-200 rounded-lg transition-all group"
+            >
+                <div className="p-2 bg-fuchsia-100 text-fuchsia-600 rounded-md group-hover:bg-fuchsia-600 group-hover:text-white transition-colors">
+                    <ScanLine className="w-4 h-4" />
+                </div>
+                <div>
+                    <div className="font-bold">Scan package.json (General)</div>
+                    <div className="text-xs text-slate-500 font-normal">Gemini Analysis • Detect Stack</div>
+                </div>
+            </button>
 
             <button 
                 onClick={() => onSimulateEvent({
                     type: 'ci_pipeline',
-                    agentId: 'a5', // CI
+                    agentId: 'a5',
                     payload: { status: 'success', workflow: 'build-and-test', artifacts: ['docker-image'] }
                 })}
                 className="w-full flex items-center gap-3 p-3 text-left text-sm font-medium text-slate-700 bg-slate-50 hover:bg-white hover:shadow-md border border-slate-200 rounded-lg transition-all group"
@@ -93,7 +121,7 @@ export const AgentPanel: React.FC<AgentPanelProps> = ({ agents, onSimulateEvent 
             <button 
                 onClick={() => onSimulateEvent({
                     type: 'ai_action',
-                    agentId: 'a3', // Cursor
+                    agentId: 'a3',
                     payload: { action: 'generate_tests', target: 'src/auth.test.ts', confidence: 0.92 }
                 })}
                 className="w-full flex items-center gap-3 p-3 text-left text-sm font-medium text-slate-700 bg-slate-50 hover:bg-white hover:shadow-md border border-slate-200 rounded-lg transition-all group"
