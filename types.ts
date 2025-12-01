@@ -11,6 +11,7 @@ export enum AgentType {
   CURSOR = 'cursor',
   GITHUB = 'github',
   CI = 'ci',
+  ANTIGRAVITY = 'antigravity',
 }
 
 export interface Project {
@@ -41,12 +42,15 @@ export interface Subcategory {
   required: boolean;
 }
 
+export type EvidenceType = 'pr' | 'pipeline' | 'file' | 'console_log' | 'screenshot' | 'artifact' | 'ai_chat';
+
 export interface Evidence {
   id: string;
-  type: 'pr' | 'pipeline' | 'file' | 'console_log';
+  type: EvidenceType;
   url: string;
   label: string;
   createdAt: string;
+  verifiedBy?: string;
 }
 
 export interface ProjectStatus {
@@ -58,6 +62,7 @@ export interface ProjectStatus {
   lastUpdatedBy: string; // 'system_agent' or user_id
   lastUpdatedAt: string;
   confidenceScore: number; // 0-100
+  aiExplanation?: string; // Reason for the automated status
   evidence: Evidence[];
 }
 
@@ -69,9 +74,18 @@ export interface Agent {
   config: Record<string, any>;
 }
 
+export interface AgentEvent {
+  id: string;
+  agentId: string;
+  type: 'file_saved' | 'local_command' | 'ci_pipeline' | 'ai_action' | 'pr_merged' | 'deployment';
+  payload: any;
+  timestamp: string;
+}
+
 export interface ActivityLog {
   id: string;
   message: string;
   timestamp: string;
-  type: 'update' | 'alert' | 'agent';
+  type: 'update' | 'alert' | 'agent' | 'ai';
+  confidence?: number;
 }

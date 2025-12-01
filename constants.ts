@@ -32,15 +32,18 @@ export const ENVIRONMENTS: Environment[] = [
 export const MOCK_AGENTS: Agent[] = [
   { id: 'a1', type: AgentType.VSCODE, lastSeen: new Date().toISOString(), status: 'online', config: {} },
   { id: 'a2', type: AgentType.GITHUB, lastSeen: new Date(Date.now() - 3600000).toISOString(), status: 'online', config: {} },
-  { id: 'a3', type: AgentType.CURSOR, lastSeen: new Date(Date.now() - 86400000).toISOString(), status: 'offline', config: {} },
+  { id: 'a3', type: AgentType.CURSOR, lastSeen: new Date(Date.now() - 120000).toISOString(), status: 'online', config: {} },
+  { id: 'a4', type: AgentType.ANTIGRAVITY, lastSeen: new Date().toISOString(), status: 'online', config: {} },
+  { id: 'a5', type: AgentType.CI, lastSeen: new Date().toISOString(), status: 'online', config: {} },
 ];
 
-export const STATUS_COLORS = {
-  [StatusEnum.NOT_STARTED]: 'bg-slate-100 text-slate-500 border-slate-200',
-  [StatusEnum.IN_PROGRESS]: 'bg-blue-50 text-blue-700 border-blue-200',
-  [StatusEnum.BLOCKED]: 'bg-red-50 text-red-700 border-red-200',
-  [StatusEnum.DONE]: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-  [StatusEnum.VERIFIED]: 'bg-purple-50 text-purple-700 border-purple-200 ring-1 ring-purple-300',
+// Enhanced "Colorful but Calm" Visuals using Tailwind Gradients
+export const STATUS_STYLES = {
+  [StatusEnum.NOT_STARTED]: 'bg-white border-slate-200 text-slate-500 hover:border-slate-300 shadow-sm',
+  [StatusEnum.IN_PROGRESS]: 'bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200 text-indigo-700 hover:shadow-md hover:border-indigo-300',
+  [StatusEnum.BLOCKED]: 'bg-gradient-to-br from-orange-50 to-red-50 border-red-200 text-red-700 hover:shadow-md hover:border-red-300',
+  [StatusEnum.DONE]: 'bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200 text-emerald-700 hover:shadow-md hover:border-emerald-300',
+  [StatusEnum.VERIFIED]: 'bg-gradient-to-br from-violet-50 to-fuchsia-50 border-violet-200 text-violet-700 ring-1 ring-violet-200 hover:shadow-md',
 };
 
 export const STATUS_LABELS = {
@@ -51,15 +54,21 @@ export const STATUS_LABELS = {
   [StatusEnum.VERIFIED]: 'Verified',
 };
 
-// Initial Mock Statuses
-export const INITIAL_STATUSES: ProjectStatus[] = SUBCATEGORIES.map((sub) => ({
-  id: `ps-${sub.id}`,
-  projectId: 'p1',
-  envId: 'e1',
-  subcategoryId: sub.id,
-  status: Math.random() > 0.7 ? StatusEnum.DONE : StatusEnum.NOT_STARTED,
-  lastUpdatedBy: 'system_agent',
-  lastUpdatedAt: new Date().toISOString(),
-  confidenceScore: 85,
-  evidence: [],
-}));
+// Initial Mock Statuses - Generated for ALL environments
+export const INITIAL_STATUSES: ProjectStatus[] = [];
+
+ENVIRONMENTS.forEach(env => {
+    SUBCATEGORIES.forEach(sub => {
+        INITIAL_STATUSES.push({
+            id: `ps-${env.id}-${sub.id}`,
+            projectId: 'p1',
+            envId: env.id,
+            subcategoryId: sub.id,
+            status: StatusEnum.NOT_STARTED,
+            lastUpdatedBy: 'system',
+            lastUpdatedAt: new Date(Date.now() - Math.random() * 86400000 * 5).toISOString(),
+            confidenceScore: 0,
+            evidence: [],
+        });
+    });
+});

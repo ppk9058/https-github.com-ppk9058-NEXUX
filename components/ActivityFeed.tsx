@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActivityLog } from '../types';
-import { Activity, Bot, User, AlertCircle } from 'lucide-react';
+import { Activity, Bot, User, CircleAlert } from 'lucide-react';
 
 interface ActivityFeedProps {
   logs: ActivityLog[];
@@ -27,7 +27,7 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({ logs }) => {
                         <div className="mt-1 flex-shrink-0">
                             {log.type === 'agent' && <Bot className="w-4 h-4 text-blue-500" />}
                             {log.type === 'update' && <User className="w-4 h-4 text-slate-500" />}
-                            {log.type === 'alert' && <AlertCircle className="w-4 h-4 text-red-500" />}
+                            {log.type === 'alert' && <CircleAlert className="w-4 h-4 text-red-500" />}
                         </div>
                         <div className="flex-1 space-y-1">
                             <p className="text-xs text-slate-700 leading-snug">{log.message}</p>
