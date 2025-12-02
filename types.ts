@@ -1,3 +1,4 @@
+
 export enum StatusEnum {
   NOT_STARTED = 'not_started',
   IN_PROGRESS = 'in_progress',
@@ -55,6 +56,22 @@ export interface Evidence {
   verifiedBy?: string;
 }
 
+export interface StatusHistoryEntry {
+  id: string;
+  timestamp: string;
+  actor: string;
+  previousStatus: StatusEnum;
+  newStatus: StatusEnum;
+  reason: string;
+}
+
+export interface Comment {
+  id: string;
+  author: string;
+  text: string;
+  timestamp: string;
+}
+
 export interface ProjectStatus {
   id: string;
   projectId: string;
@@ -66,6 +83,8 @@ export interface ProjectStatus {
   confidenceScore: number; // 0-100
   aiExplanation?: string; // Reason for the automated status
   evidence: Evidence[];
+  history: StatusHistoryEntry[];
+  comments: Comment[];
 }
 
 export interface Agent {
@@ -90,4 +109,12 @@ export interface ActivityLog {
   timestamp: string;
   type: 'update' | 'alert' | 'agent' | 'ai';
   confidence?: number;
+}
+
+export interface DoraMetrics {
+  deploymentFrequency: string;
+  leadTimeForChanges: string;
+  changeFailureRate: string;
+  timeToRestoreService: string;
+  trend: 'up' | 'down' | 'stable';
 }

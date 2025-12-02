@@ -1,4 +1,5 @@
-import { Category, Subcategory, Project, Environment, StatusEnum, AgentType, Agent, ProjectStatus } from './types';
+
+import { Category, Subcategory, Project, Environment, StatusEnum, AgentType, Agent, ProjectStatus, DoraMetrics } from './types';
 
 // Categories mapped to specific stages based on the prompt
 export const CATEGORIES: Category[] = [
@@ -126,11 +127,11 @@ export const MOCK_AGENTS: Agent[] = [
 ];
 
 export const STATUS_STYLES = {
-  [StatusEnum.NOT_STARTED]: 'bg-white border-slate-200 text-slate-500 hover:border-slate-300 shadow-sm',
-  [StatusEnum.IN_PROGRESS]: 'bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200 text-indigo-700 hover:shadow-md hover:border-indigo-300',
-  [StatusEnum.BLOCKED]: 'bg-gradient-to-br from-orange-50 to-red-50 border-red-200 text-red-700 hover:shadow-md hover:border-red-300',
-  [StatusEnum.DONE]: 'bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200 text-emerald-700 hover:shadow-md hover:border-emerald-300',
-  [StatusEnum.VERIFIED]: 'bg-gradient-to-br from-violet-50 to-fuchsia-50 border-violet-200 text-violet-700 ring-1 ring-violet-200 hover:shadow-md',
+  [StatusEnum.NOT_STARTED]: 'bg-white border-slate-200 text-slate-500 hover:border-slate-300 shadow-sm dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400',
+  [StatusEnum.IN_PROGRESS]: 'bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200 text-indigo-700 hover:shadow-md hover:border-indigo-300 dark:from-indigo-900/20 dark:to-blue-900/20 dark:border-indigo-800 dark:text-indigo-300',
+  [StatusEnum.BLOCKED]: 'bg-gradient-to-br from-orange-50 to-red-50 border-red-200 text-red-700 hover:shadow-md hover:border-red-300 dark:from-red-900/20 dark:to-orange-900/20 dark:border-red-800 dark:text-red-300',
+  [StatusEnum.DONE]: 'bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200 text-emerald-700 hover:shadow-md hover:border-emerald-300 dark:from-emerald-900/20 dark:to-teal-900/20 dark:border-emerald-800 dark:text-emerald-300',
+  [StatusEnum.VERIFIED]: 'bg-gradient-to-br from-violet-50 to-fuchsia-50 border-violet-200 text-violet-700 ring-1 ring-violet-200 hover:shadow-md dark:from-violet-900/20 dark:to-fuchsia-900/20 dark:border-violet-800 dark:text-violet-300 dark:ring-violet-900',
 };
 
 export const STATUS_LABELS = {
@@ -139,6 +140,31 @@ export const STATUS_LABELS = {
   [StatusEnum.BLOCKED]: 'Blocked',
   [StatusEnum.DONE]: 'Done',
   [StatusEnum.VERIFIED]: 'Verified',
+};
+
+// Mock DORA Metrics
+export const MOCK_METRICS: Record<string, DoraMetrics> = {
+  dev: {
+    deploymentFrequency: 'On-demand',
+    leadTimeForChanges: '< 1 hour',
+    changeFailureRate: '5%',
+    timeToRestoreService: 'N/A',
+    trend: 'stable'
+  },
+  staging: {
+    deploymentFrequency: '4/day',
+    leadTimeForChanges: '4 hours',
+    changeFailureRate: '12%',
+    timeToRestoreService: '30 mins',
+    trend: 'up'
+  },
+  prod: {
+    deploymentFrequency: '2/week',
+    leadTimeForChanges: '2 days',
+    changeFailureRate: '0.1%',
+    timeToRestoreService: '1 hour',
+    trend: 'down'
+  }
 };
 
 // Initial Mock Statuses - Generated ONLY if the subcategory belongs to the environment
@@ -164,6 +190,8 @@ ENVIRONMENTS.forEach(env => {
                 lastUpdatedAt: new Date(Date.now() - Math.random() * 86400000 * 5).toISOString(),
                 confidenceScore: initStatus === StatusEnum.DONE ? Math.floor(Math.random() * 20) + 80 : 0,
                 evidence: [],
+                history: [],
+                comments: []
             });
         }
     });
